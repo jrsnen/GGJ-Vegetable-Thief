@@ -13,11 +13,16 @@ var velocity : Vector2 = Vector2.ZERO
 var level_x_min = 16
 var level_x_max = 624
 
+export var vegetable_tiles : NodePath
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     pass # Replace with function body.
 
 func _physics_process(delta):
+    
+    if (Input.is_action_just_pressed("grab")):
+        pick_vegetable()
     
     velocity.y += gravity
     
@@ -38,8 +43,19 @@ func _physics_process(delta):
         velocity.x = move_toward(velocity.x, speed*input.x, acceleration)
     
     velocity = move_and_slide(velocity, Vector2.UP)
-    
+    print(get_node(vegetable_tiles).get_cellv(position))
+    get_node(vegetable_tiles).set_cellv(position, 0)
     if position.x < level_x_min:
         position.x = level_x_min
     elif position.x > level_x_max:
         position.x = level_x_max
+        
+func pick_vegetable():
+    print("Pick vegetable")
+    if vegetable_tiles != null \
+    and get_node(vegetable_tiles).get_cellv(convert_to_tilemap(position)) != TileMap.INVALID_CELL:
+        get_node(vegetable_tiles).set_cellv(position, TileMap.INVALID_CELL)
+
+
+func convert_to_tilemap(var real_position : Vector2):
+    return (real_position + Vector2(16,16))/32
