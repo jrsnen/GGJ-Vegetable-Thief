@@ -18,10 +18,7 @@ var level_x_max = 1264
 
 export var vegetable_tiles : NodePath
 
-export var all_vegetables = 6
-var collected_vegetables = 0
-
-signal win
+export var basket : NodePath
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,7 +32,7 @@ func _physics_process(delta):
     var encumbrance_modifier : Vector2 = Vector2(1.0, 1.0)
     
     if has_heavy_encumbrance():
-        encumbrance_modifier = Vector2(0.3, 0.5)
+        encumbrance_modifier = Vector2(0.3, 0.8)
     elif has_light_encumbrance():
         encumbrance_modifier = Vector2(0.5, 1.0)
         
@@ -67,19 +64,24 @@ func _physics_process(delta):
 func pick_vegetable():
     var tile_position : Vector2 = convert_to_tilemap(position) + Vector2(-0.5, 1.0)
     tile_position = Vector2(floor(tile_position.x), floor(tile_position.y))
-    if vegetable_tiles != null \
-    and get_node(vegetable_tiles).get_cellv(tile_position) != TileMap.INVALID_CELL:
+    
+    print(get_node(vegetable_tiles).get_cellv(tile_position))
+    
+    if get_node(vegetable_tiles).get_cellv(tile_position) == TileMap.INVALID_CELL:
+        pass
+    elif get_node(vegetable_tiles).get_cellv(tile_position) == 1:
+        print("Adding vegetables to basket")
+        get_node(basket).transfer_contents($"Resource Holder")
+    else:
+        print("Stealing vegetable")
         get_node(vegetable_tiles).set_cellv(tile_position, TileMap.INVALID_CELL)
-        collected_vegetables += 1
-        if collected_vegetables == all_vegetables:
-            print("Level Completed!")
-            emit_signal("win")
+        $"Resource Holder".give_resource(0)
 
 func convert_to_tilemap(var real_position : Vector2):
     return (real_position + Vector2(16,16))/32
 
 func has_light_encumbrance():
-    return collected_vegetables > light_encumbrance
+    return $"Resource Holder".get_current_resource() >= light_encumbrance
     
 func has_heavy_encumbrance():
-    return collected_vegetables > heavy_encumbrance
+    return $"Resource Holder".get_current_resource() >= heavy_encumbrance

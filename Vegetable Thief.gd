@@ -24,7 +24,7 @@ func _on_Game_time_timeout():
     get_tree().change_scene("res://Failure Screen.tscn")
 
 
-func _on_Player_win():
+func _on_win():
     if level_number == max_level:
         print("All levels completed!")
         get_tree().change_scene("res://Credits.tscn")
