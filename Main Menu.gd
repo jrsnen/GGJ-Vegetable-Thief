@@ -1,7 +1,6 @@
 extends Node2D
 
-export var game : PackedScene
-
+export var level1 : PackedScene
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -9,7 +8,7 @@ func _process(delta):
 
 
 func _on_Start_button_up():
-    get_tree().change_scene(game.resource_path)
+    get_tree().change_scene(level1.resource_path)
 
 
 func _on_Exit_button_up():
