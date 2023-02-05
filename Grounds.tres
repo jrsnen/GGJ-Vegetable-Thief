@@ -46,6 +46,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
 [resource]
+resource_local_to_scene = true
 3/name = "Solids"
 3/texture = ExtResource( 2 )
 3/tex_offset = Vector2( 0, 0 )

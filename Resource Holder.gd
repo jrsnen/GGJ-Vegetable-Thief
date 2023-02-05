@@ -1,8 +1,8 @@
 extends Node2D
 
-export var vegetable_textures : Array
 export var max_resources = 5
 export var win_when_full : bool = false
+export var vegetable_sprites : PackedScene
 
 var current_resources = 0
 
@@ -10,16 +10,17 @@ signal win
 
 func _ready():
     for n in range(1, max_resources + 1):
-        var sprite_child = Sprite.new()
-        sprite_child.position.y = -32*n
-        add_child(sprite_child)
+        var sprite : AnimatedSprite = vegetable_sprites.instance()
+        sprite.position.y = -32*n
+        add_child(sprite)
 
-func give_resource(var index : int):
+func give_resource(var index : String):
     if current_resources == max_resources:
         return false
     
     current_resources += 1
-    get_child(current_resources - 1).texture = vegetable_textures[index]
+    
+    get_child(current_resources - 1).animation = index
     
     if win_when_full and current_resources == max_resources:
         emit_signal("win")
@@ -27,16 +28,18 @@ func give_resource(var index : int):
     return true
 
 func transfer_contents(var holder : Node2D):
-    for n in  holder.get_current_resource():
-        give_resource(0) # TODO: vegetable types
+    var resource_amount = holder.get_current_resource()
+    for n in resource_amount:
+        give_resource(holder.take_resource())
         
-    holder.empty_this()
 
-func empty_this():
-    for n in range(0, current_resources):
-        get_child(n).texture = null
-    
-    current_resources = 0
+func take_resource():
+    var animation_type = "Empty"
+    if current_resources > 0:
+        animation_type = get_child(current_resources - 1).animation
+        get_child(current_resources - 1).animation = "Empty"
+        current_resources -= 1
+    return animation_type
 
 func get_current_resource():
     return current_resources
