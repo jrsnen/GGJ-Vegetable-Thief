@@ -53,7 +53,10 @@ size_flags_vertical = 3
 [node name="Start" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer"]
 margin_right = 480.0
 margin_bottom = 43.0
-text = "New Game"
+text = "Start"
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 margin_top = 47.0

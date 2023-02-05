@@ -16,7 +16,7 @@ position = Vector2( 0, -16 )
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( 393228, 0, 0, 589828, 0, 0, 589829, 0, 0, 655374, 0, 0, 786432, 1, 0, 786440, 0, 0, 786450, 0, 0 )
+tile_data = PoolIntArray( 786432, 1, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 vegetable_tiles = NodePath("../Vegetables")
